@@ -69,7 +69,7 @@ for i in range(1,10):
 
 
 df=pandas.DataFrame(news_total)#pandas整理数据
-df.to_sql('sina_chinanews',engine,if_exists='append')#插入数据库
+df.to_sql('sina_chinanews',engine,if_exists='append')#插入数据库s
 
 
 
