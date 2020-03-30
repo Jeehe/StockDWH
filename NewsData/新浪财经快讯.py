@@ -9,6 +9,7 @@ import pandas
 from sqlalchemy import create_engine
 engine = create_engine('mysql+pymysql://root:P@ssword@localhost:3306/test?charset=utf8')
 import pymysql
+import tqdm
 def getnewsdetail(url):
     try:
         result={}
