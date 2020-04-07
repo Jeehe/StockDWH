@@ -24,7 +24,7 @@ def getnewsdetail(url):
         timesource = soup.select('.date-source')[0].contents[1].text  # 新闻时间&来源
         result['timesource'] = soup.select('.date-source')[0].contents[1].text  # 新闻时间
         result['dt']= datetime.strptime(timesource, '%Y年%m月%d日 %H:%M')  # 新闻时间转换为时间格式
-        #result['article'] = ' '.join([p.text.strip() for p in soup.select('.article p')[:-1]])  # 一行文 获取文章内容
+        #result['article'] = ' '.join([p.text.strip() for p in soup.select('.article p')[:-1]])  # 一行文 获取文章内容,文章内容可能过长，暂时取消插入
         result['updatetime']=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) #获取当前时间
         return result
     except:
