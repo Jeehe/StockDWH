@@ -9,7 +9,7 @@ import pandas
 from sqlalchemy import create_engine
 engine = create_engine('mysql+pymysql://root:P@ssword@localhost:3306/test?charset=utf8')
 import pymysql
-import tqdm
+from tqdm import tqdm #添加进度条
 def getnewsdetail(url):
     try:
         result={}
@@ -24,7 +24,7 @@ def getnewsdetail(url):
         timesource = soup.select('.date-source')[0].contents[1].text  # 新闻时间&来源
         result['timesource'] = soup.select('.date-source')[0].contents[1].text  # 新闻时间
         result['dt']= datetime.strptime(timesource, '%Y年%m月%d日 %H:%M')  # 新闻时间转换为时间格式
-        result['article'] = ' '.join([p.text.strip() for p in soup.select('.article p')[:-1]])  # 一行文 获取文章内容
+        #result['article'] = ' '.join([p.text.strip() for p in soup.select('.article p')[:-1]])  # 一行文 获取文章内容
         result['updatetime']=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) #获取当前时间
         return result
     except:
@@ -43,7 +43,7 @@ newslisturl='http://feed.mix.sina.com.cn/api/roll/get?pageid=155&lid=1686&num=10
 
 #产生分页连接
 news_total=[]
-for i in range(1,10):
+for i in tqdm(range(1,10)):
     newsurl=newslisturl.format(i)
     newsary=parserlistlinks(newsurl)
     news_total.extend(newsary)
@@ -71,6 +71,7 @@ cursor.close()
 conn.close()
 
 df=pandas.DataFrame(news_total)#pandas整理数据
+
 df.to_sql('sina_chinafinnews',engine,if_exists='append')#插入数据库
 
 '''
