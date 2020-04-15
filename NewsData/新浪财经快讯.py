@@ -56,7 +56,7 @@ conn=pymysql.connect(
     user='root',
     password='P@ssword',
     database='test',
-    #charset='utf-8'
+    #charset='UTF8MB4'
 )
 #获取一个光标
 cursor=conn.cursor()
