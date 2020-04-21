@@ -4,6 +4,8 @@ import pandas as pd
 import pandas_datareader.data as web
 import datetime
 import pymysql
+from tqdm import tqdm #添加进度条
+import time
 from sqlalchemy import create_engine
 engine = create_engine('mysql+pymysql://root:P@ssword@localhost:3306/test?charset=utf8')
 
@@ -17,23 +19,29 @@ start = datetime.datetime(2020, 1, 1)
 end = datetime.datetime(2020, 2, 1)
 
 # try to collect data
-try:
-    data = web.DataReader(symbol, 'yahoo', start, end)
-    data = pd.DataFrame(data)
-    data['symbol'] = symbol
-    data['Volume'] = data['Volume'].astype(int)
-    data['Execute'] = 1
+for i in tqdm(range(1,10),desc="collect"):
+    try:
+        data = web.DataReader(symbol, 'yahoo', start, end)
+        data = pd.DataFrame(data)
+        data['symbol'] = symbol
+        data['Volume'] = data['Volume'].astype(int)
+        data['Execute'] = 1
 
-except:
-    #data = pd.DataFrame(columns=['symbol'])
-    #data = data.append({'symbol': symbol}, ignore_index=True)
-    data['Execute'] = 0
-    #data['Adj Close(-1)'] = -99.0
-    #data['Prediction (Adj Close)'] = -99.0
-    #data['Percentage Increase'] = -99.0
+    except:
+        data = pd.DataFrame(columns=['symbol'])
+        data = data.append({'symbol': symbol}, ignore_index=True)
+        data['Execute'] = 0
+        data['Adj Close(-1)'] = -99.0
+        data['Prediction (Adj Close)'] = -99.0
+        data['Percentage Increase'] = -99.0
+    time.sleep(0.01)
 
-#df.to_sql('stockinfor',engine,if_exists='append')#插入数据库
-print(data)
+for i in tqdm(range(1,10),desc="print data"):
+    #data.to_sql('stockinfor',engine,if_exists='append')#插入数据库
+    print(data)
+    time.sleep(0.01)
+
+
 
 
 
