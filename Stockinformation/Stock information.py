@@ -14,12 +14,14 @@ engine = create_engine('mysql+pymysql://root:P@ssword@localhost:3306/test?charse
 DataReader可从多个金融网站获取到股票数据，如“Yahoo! Finance” 、“Google Finance”等，这里以Yahoo为例。
 第三、四个参数为股票数据的起始时间断。返回的数据格式为DataFrame。'''
 
-symbol=['000002.SZ']
-start = datetime.datetime(2020, 1, 1)
-end = datetime.datetime(2020, 2, 1)
+symbol='000002.SZ'
+
+#Set date range
+start = datetime.datetime(2020, 4, 1)
+end = datetime.datetime(2020, 4, 22)
 
 # try to collect data
-for i in tqdm(range(1,10),desc="collect"):
+for i in tqdm(range(1,10),desc="get data"):
     try:
         data = web.DataReader(symbol, 'yahoo', start, end)
         data = pd.DataFrame(data)
@@ -34,9 +36,8 @@ for i in tqdm(range(1,10),desc="collect"):
         data['Adj Close(-1)'] = -99.0
         data['Prediction (Adj Close)'] = -99.0
         data['Percentage Increase'] = -99.0
-    time.sleep(0.01)
 
-for i in tqdm(range(1,10),desc="print data"):
+for i in tqdm(range(1,10),desc="insert data"):
     #data.to_sql('stockinfor',engine,if_exists='append')#插入数据库
     print(data)
     time.sleep(0.01)
